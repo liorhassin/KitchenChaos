@@ -13,8 +13,16 @@ public class Player : MonoBehaviour {
     private void Update() {
         
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
-        Vector3 moveDirection = new Vector3(inputVector.x, 0, inputVector.y) * moveSpeed;
-        transform.position += moveDirection * Time.deltaTime;
+        Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y);
+
+        float moveDistance = moveSpeed * Time.deltaTime;
+        float playerRadius = .7f;
+        float playerHeight = 2f;
+        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirection, moveDistance);
+        
+        if (canMove){
+            transform.position += moveDirection * moveDistance;
+        }
 
         isWalking = moveDirection != Vector3.zero;
         
