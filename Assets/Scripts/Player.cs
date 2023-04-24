@@ -34,7 +34,7 @@ public class Player : MonoBehaviour {
 
     private void GameInput_OnInteractAction(object sender, EventArgs e) {
         if (selectedCounter != null) {
-            
+            selectedCounter.Interact();
         }
     }
 
