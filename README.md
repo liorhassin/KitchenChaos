@@ -1,2 +1,2 @@
 # KitchenChaos
- 3D Top down kitchen game - Tutorial
+ 3D Top down kitchen game
