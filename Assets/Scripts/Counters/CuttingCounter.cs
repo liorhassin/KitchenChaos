@@ -26,8 +26,21 @@ public class CuttingCounter : BaseCounter, IHasProgress{
             });
         }
         else { //Counter has an object on it
-            if (player.HasKitchenObject()) return; //Player is already holding an object.
+            if (player.HasKitchenObject()){
+                if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject)) {
+                    //Player is holding a plate
+                    if (plateKitchenObject != null && plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO())) {
+                        GetKitchenObject().DestroySelf();
+                    }
+                }
+                return; //Player is already holding an object.
+            }
             GetKitchenObject().SetKitchenObjectParent(player);
+
+            cuttingProgress = 0;
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs {
+                progressNormalized = 0
+            });
         }
     }
 
