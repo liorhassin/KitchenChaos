@@ -17,6 +17,22 @@ public class SoundManager : MonoBehaviour{
             DeliveryCounter deliveryCounter = DeliveryCounter.Instance;
             PlaySound(audioClipRefsSO.deliveryFail, deliveryCounter.transform.position);
         };
+        CuttingCounter.OnAnyCut += (sender, e) => {
+            CuttingCounter cuttingCounter = sender as CuttingCounter;
+            PlaySound(audioClipRefsSO.chop, cuttingCounter.transform.position);
+        };
+        Player.Instance.OnPickedSomething += (sender, e) => {
+            Player player = sender as Player;
+            PlaySound(audioClipRefsSO.objectPickup, player.transform.position);
+        };
+        BaseCounter.OnAnyObjectPlacedHere += (sender, e) => {
+            BaseCounter baseCounter = sender as BaseCounter;
+            PlaySound(audioClipRefsSO.objectDrop, baseCounter.transform.position);
+        };
+        TrashCounter.OnAnyObjectTrashed += (sender, e) => {
+            TrashCounter trashCounter = sender as TrashCounter;
+            PlaySound(audioClipRefsSO.trash, trashCounter.transform.position);
+        };
     }
 
     private void PlaySound(AudioClip[] audioClipArray, Vector3 position, float volume = 1f){
