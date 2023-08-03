@@ -8,7 +8,7 @@ public class DeliveryCounter : BaseCounter {
         player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject);
         if (plateKitchenObject == null) return;
         //Reached here, Player is holding an object and that object is a Plate.
-        
+        DeliveryManager.Instance.DeliverRecipe(plateKitchenObject);
         player.GetKitchenObject().DestroySelf();
     }
 }

@@ -11,21 +11,23 @@ public class PlatesCounter : BaseCounter {
     [SerializeField] private KitchenObjectSO plateKitchenObjectSO;
     
     private float spawnPlateTimer;
-    private float spawnPlateTimerMax = 4f;
+    private const float SpawnPlateTimerMax = 4f;
     private int platesSpawnedAmount;
-    private int platesSpawnedAmountMax = 4;
-    
+    private const int PlatesSpawnedAmountMax = 4;
+
+    private void Start(){
+        spawnPlateTimer = 3f; //Make first plate when starting the game come out faster.
+    }
+
     private void Update() {
         spawnPlateTimer += Time.deltaTime;
-        if (spawnPlateTimer > spawnPlateTimerMax) {
-            spawnPlateTimer = 0f;
-
-            if (platesSpawnedAmount < platesSpawnedAmountMax) {
-                platesSpawnedAmount++;
-                
-                OnPlateSpawned?.Invoke(this, EventArgs.Empty);
-            }
-        }
+        if (spawnPlateTimer < SpawnPlateTimerMax) return;
+        spawnPlateTimer = 0f;
+        if (platesSpawnedAmount >= PlatesSpawnedAmountMax) return;
+        
+        //All requirements are met, Plate can be spawned.
+        platesSpawnedAmount++;
+        OnPlateSpawned?.Invoke(this, EventArgs.Empty);
     }
 
     public override void Interact(Player player) {
