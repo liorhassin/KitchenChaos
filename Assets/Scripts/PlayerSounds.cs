@@ -19,6 +19,6 @@ public class PlayerSounds : MonoBehaviour{
         footstepTimer = FootstepTimerMax;
         if (!player.IsWalking()) return; //Player is not walking, No sound is needed.
         float volume = 1f;
-        SoundManager.Instance.PlayFootstepsSound(player.transform.position, 1f);
+        SoundManager.Instance.PlayFootstepsSound(player.transform.position, volume);
     }
 }
