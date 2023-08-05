@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class KitchenGameManager : MonoBehaviour{
     
     public static KitchenGameManager Instance{ get; private set; }
 
     public event EventHandler OnStateChanged;
+    public event EventHandler OnGamePaused;
+    public event EventHandler OnGameUnPaused;
     
     private enum State {
         WaitingToStart,
@@ -21,11 +24,18 @@ public class KitchenGameManager : MonoBehaviour{
     private float countdownToStartTimer = 3f;
     private float gamePlayingTimer;
     private float gamePlayingTimerMax = 10f;
+    private bool isGamePaused = false;
 
 
     private void Awake(){
         Instance = this;
         state = State.WaitingToStart;
+    }
+
+    private void Start(){
+        GameInput.Instance.OnPauseAction += (sender, e) => {
+            TogglePauseGame();
+        };
     }
 
     private void Update(){
@@ -74,5 +84,17 @@ public class KitchenGameManager : MonoBehaviour{
     //Reversed calculation because we are counting down and not up.
     public float GetGamePlayingTimerNormalized(){
         return 1 - (gamePlayingTimer/gamePlayingTimerMax);
+    }
+
+    public void TogglePauseGame(){
+        isGamePaused = !isGamePaused;
+        if (isGamePaused) {
+            Time.timeScale = 0f;
+            OnGamePaused?.Invoke(this, EventArgs.Empty);
+        }
+        else {
+            Time.timeScale = 1f;
+            OnGameUnPaused?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
