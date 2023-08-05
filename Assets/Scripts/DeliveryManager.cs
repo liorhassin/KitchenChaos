@@ -22,6 +22,7 @@ public class DeliveryManager : MonoBehaviour{
     private float spawnRecipeTimer;
     private const float SpawnRecipeTimerMax = 4f;
     private const int WaitingRecipeMaxSize = 4;
+    private int recipesDeliveredAmount;
 
     private void Awake(){
         Instance = this;
@@ -31,6 +32,7 @@ public class DeliveryManager : MonoBehaviour{
     }
 
     private void Start(){
+        recipesDeliveredAmount = 0;
         spawnRecipeTimer = 1f; //Make first recipe come faster when starting the game.
     }
 
@@ -70,6 +72,7 @@ public class DeliveryManager : MonoBehaviour{
 
             if (plateContentMatchesRecipe) {
                 //Player delivered a valid recipe
+                recipesDeliveredAmount++;
                 waitingRecipeSOList.RemoveAt(i);
                 OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
                 OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
@@ -83,5 +86,9 @@ public class DeliveryManager : MonoBehaviour{
 
     public List<RecipeSO> GetWaitingRecipeSOList(){
         return waitingRecipeSOList;
+    }
+
+    public int GetRecipesDeliveredAmount(){
+        return recipesDeliveredAmount;
     }
 }
