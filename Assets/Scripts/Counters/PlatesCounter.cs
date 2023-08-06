@@ -24,6 +24,7 @@ public class PlatesCounter : BaseCounter {
         if (spawnPlateTimer < SpawnPlateTimerMax) return;
         spawnPlateTimer = 0f;
         if (platesSpawnedAmount >= PlatesSpawnedAmountMax) return;
+        if (!KitchenGameManager.Instance.IsGamePlaying()) return; //Game didn't start yet, Player is reading the tutorial.
         
         //All requirements are met, Plate can be spawned.
         platesSpawnedAmount++;
