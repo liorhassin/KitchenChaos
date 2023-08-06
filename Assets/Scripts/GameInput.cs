@@ -5,7 +5,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class GameInput : MonoBehaviour {
+public class GameInput : MonoBehaviour{
+
+    private const string PLAYER_PREFS_BINDINGS = "InputBindings";
 
     public static GameInput Instance{ get; private set; }
 
@@ -28,11 +30,18 @@ public class GameInput : MonoBehaviour {
         Instance = this;
         
         playerInputActions = new PlayerInputActions();
+        
+        //If player saved rebinding it will be taken before loading.
+        if (PlayerPrefs.HasKey(PLAYER_PREFS_BINDINGS)) {
+            playerInputActions.LoadBindingOverridesFromJson(PlayerPrefs.GetString(PLAYER_PREFS_BINDINGS));
+        }
+        
         playerInputActions.Player.Enable();
         
         playerInputActions.Player.Interact.performed += Interact_performed; //Adding listener to Interact action.
         playerInputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
         playerInputActions.Player.Pause.performed += Pause_performed;
+
     }
 
     private void OnDestroy(){
@@ -123,6 +132,9 @@ public class GameInput : MonoBehaviour {
                 callback.Dispose();
                 playerInputActions.Player.Enable();
                 onActionRebound();
+                
+                PlayerPrefs.SetString(PLAYER_PREFS_BINDINGS, playerInputActions.SaveBindingOverridesAsJson());
+                PlayerPrefs.Save();
             }).Start();
     }
 }
