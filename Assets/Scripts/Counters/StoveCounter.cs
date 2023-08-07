@@ -161,5 +161,8 @@ public class StoveCounter : BaseCounter, IHasProgress {
             if (burningRecipeSO.input == inputKitchenObjectSO) return burningRecipeSO;
         return null;
     }
-    
+
+    public bool IsFried(){
+        return state == State.Fried;
+    }
 }

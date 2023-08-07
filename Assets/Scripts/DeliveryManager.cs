@@ -41,6 +41,7 @@ public class DeliveryManager : MonoBehaviour{
         if (spawnRecipeTimer > 0f) return; //Timer didn't reach 0 yet.
         spawnRecipeTimer = SpawnRecipeTimerMax; //Reset timer
         if (waitingRecipeSOList.Count >= WaitingRecipeMaxSize) return; //Reached maximum amount of recipes allowed.
+        if (!KitchenGameManager.Instance.IsGamePlaying()) return; //Game didn't start yet, Player is reading the tutorial.
         
         //Recipe timer requirement is met and there is still a spot for new recipe, New recipe can be spawned.
         waitingRecipeSOList.Add(recipeListSO.recipeSOList[Random.Range(0, recipeListSO.recipeSOList.Count)]);
